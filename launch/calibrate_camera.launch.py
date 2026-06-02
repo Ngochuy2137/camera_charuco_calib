@@ -1,4 +1,4 @@
-"""Launch ChArUco camera calibration with common defaults."""
+"""Launch ChArUco fisheye camera calibration with common defaults."""
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess
@@ -22,6 +22,8 @@ def generate_launch_description():
         DeclareLaunchArgument('capture_width', default_value='1280'),
         DeclareLaunchArgument('capture_height', default_value='720'),
         DeclareLaunchArgument('capture_fps', default_value='30'),
+        DeclareLaunchArgument('projection_model', default_value='fisheye', description='fisheye | pinhole'),
+        DeclareLaunchArgument('distortion_model', default_value='fisheye', description='fisheye (with fisheye projection) | brown | brown_rational'),
         DeclareLaunchArgument('preview', default_value='topic', description='auto | gui | topic'),
         DeclareLaunchArgument('preview_topic', default_value='/charuco_calib/preview/compressed'),
         DeclareLaunchArgument('preview_jpeg_quality', default_value='85'),
@@ -46,6 +48,8 @@ def generate_launch_description():
                 '--capture_width', LaunchConfiguration('capture_width'),
                 '--capture_height', LaunchConfiguration('capture_height'),
                 '--capture_fps', LaunchConfiguration('capture_fps'),
+                '--projection-model', LaunchConfiguration('projection_model'),
+                '--distortion-model', LaunchConfiguration('distortion_model'),
                 '--preview', LaunchConfiguration('preview'),
                 '--preview_topic', LaunchConfiguration('preview_topic'),
                 '--preview_jpeg_quality', LaunchConfiguration('preview_jpeg_quality'),
@@ -54,8 +58,7 @@ def generate_launch_description():
                 '-w', LaunchConfiguration('width'),
                 '-H', LaunchConfiguration('height'),
                 '--aruco_dict', LaunchConfiguration('aruco_dict'),
-                '--projection-model', 'pinhole',
-                '--distortion-model', 'brown_rational',
+                '--debug_images',
                 '--output_yaml', LaunchConfiguration('output_yaml'),
                 '--output_json', LaunchConfiguration('output_json'),
                 '--save_captures_dir', LaunchConfiguration('save_captures_dir'),
